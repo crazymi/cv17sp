@@ -21,12 +21,13 @@ padded_img = padarray(img, [fh fw], 'replicate', 'both');
 [ih, iw] = size(padded_img);
 
 % copy of original img
+padded_img = double(padded_img);
 filtered_img = padded_img;
 
 for i = 1+fh:ih-fh
     for j = 1+fw:iw-fw
         % convolution
-        source = double(padded_img([i-fh:i+fh], [j-fw : j+fw]));
+        source = padded_img([i-fh:i+fh], [j-fw : j+fw]);
         multiplied_matrix = source.*filter;
         sum_of_multiply = sum(multiplied_matrix(:));
         filtered_img(i, j) = sum_of_multiply;
