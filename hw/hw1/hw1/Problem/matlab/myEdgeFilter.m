@@ -50,29 +50,27 @@ end
 % G****H**D*I   D=I(i+1,j+1)*p + H(i+1,j)*(1-p)
 
 % first and last row, column is not on calculate
-for i = 2 : ih-1
-    for j = 2 : iw-1
-        % need thresholding to ignore noise
-        
-        % ignore zero gradient
-        if(imgEdgeOrientation(i,j) ~= 0)    
-            if(inverseGradientTangent(i,j) > 0)
-                % tangent > 0 == 0<theta<90
-                interpolateUpperSide = imgEdgeMagnitude(i-1, j) * (1-inverseGradientTangent(i,j)) + imgEdgeMagnitude(i-1, j+1) * inverseGradientTangent(i,j);
-                interpolateDownSide = imgEdgeMagnitude(i+1, j) * (1-inverseGradientTangent(i,j)) + imgEdgeMagnitude(i+1, j-1) * inverseGradientTangent(i,j); 
-            else
-                % tangent < 0 == 90<theta<180
-                interpolateUpperSide = imgEdgeMagnitude(i-1, j) * (1-inverseGradientTangent(i,j)) + imgEdgeMagnitude(i-1, j-1) * inverseGradientTangent(i,j);
-                interpolateDownSide = imgEdgeMagnitude(i+1, j) * (1-inverseGradientTangent(i,j)) + imgEdgeMagnitude(i+1, j+1) * inverseGradientTangent(i,j);
-            end
-            
-            % suppress it whenever non-maximum
-            if(imgEdgeMagnitude(i,j) < interpolateDownSide || imgEdgeMagnitude(i,j) < interpolateUpperSide)
-                imgEdgeMagnitude(i,j) = 0;
-            end
-        end
-    end
-end
+% for i = 2 : ih-1
+%     for j = 2 : iw-1
+%         % need thresholding to ignore noise
+%         if(imgEdgeOrientation(i,j) > 0.5)
+%             if(inverseGradientTangent(i,j) > 0)
+%                 % tangent > 0 == 0<theta<90
+%                 interpolateUpperSide = imgEdgeMagnitude(i-1, j) * (1-inverseGradientTangent(i,j)) + imgEdgeMagnitude(i-1, j+1) * inverseGradientTangent(i,j);
+%                 interpolateDownSide = imgEdgeMagnitude(i+1, j) * (1-inverseGradientTangent(i,j)) + imgEdgeMagnitude(i+1, j-1) * inverseGradientTangent(i,j); 
+%             else
+%                 % tangent < 0 == 90<theta<180
+%                 interpolateUpperSide = imgEdgeMagnitude(i-1, j) * (1-inverseGradientTangent(i,j)) + imgEdgeMagnitude(i-1, j-1) * inverseGradientTangent(i,j);
+%                 interpolateDownSide = imgEdgeMagnitude(i+1, j) * (1-inverseGradientTangent(i,j)) + imgEdgeMagnitude(i+1, j+1) * inverseGradientTangent(i,j);
+%             end
+%             
+%             % suppress it whenever non-maximum
+%             if(imgEdgeMagnitude(i,j) < interpolateDownSide || imgEdgeMagnitude(i,j) < interpolateUpperSide)
+%                 imgEdgeMagnitude(i,j) = 0;
+%             end
+%         end
+%     end
+% end
 
 % return type of matlab 'edge' function is logical. follow it
 % imgEdgeMagnitude = logical(imgEdgeMagnitude);

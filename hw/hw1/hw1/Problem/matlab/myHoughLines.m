@@ -1,5 +1,5 @@
-% function [lineRho lineTheta peaks] = myHoughLines(houghSpace, rhoResolution, thetaResolution, numberOfLines)
-function [peaks] = myHoughLines(houghSpace, rhoResolution, thetaResolution, numberOfLines)
+function [lineRho lineTheta] = myHoughLines(houghSpace, rhoResolution, thetaResolution, numberOfLines)
+% function [peaks] = myHoughLines(houghSpace, rhoResolution, thetaResolution, numberOfLines)
 [ih iw] = size(houghSpace);
 
 % matrix peaks : N X 3 matrix
@@ -39,7 +39,20 @@ for i=1:ih
     end
 end
 
-peaks = sortrows(peaks, 3);
-[ph pw] = size(peaks);
+% descending order sorting at 3rd column
+peaks = sortrows(peaks, -3);
+[ph pw] = size(peaks); % N*3
+% number of founded peaks is mucher than require
+if(ph > numberOfLines)
+    peaks = peaks(1:numberOfLines, :);
+    ph = numberOfLines;
+end
+% compute rho and theta from peaks
+for i=1:ph
+    peaks(i,1) = rhoSpace(peaks(i,1));
+    peaks(i,2) = thetaSpace(peaks(i,2));
+end
+lineRho = peaks(:,1);
+lineTheta = peaks(:,2);
 
 end

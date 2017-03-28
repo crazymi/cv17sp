@@ -1,7 +1,7 @@
 function [houghSpace] = myHoughTransform(imgEdgeMagnitude, minThreshold, rhoResolution, thetaResolution)
 [ih iw] = size(imgEdgeMagnitude);
 
-maxRho = sqrt(ih*ih+iw*iw) - 1;
+maxRho = floor(sqrt(ih*ih+iw*iw));
 rhoSpace = -maxRho:rhoResolution:maxRho;
 thetaSpace = -90:thetaResolution:90;
 % to ignore last element 90
@@ -25,7 +25,7 @@ for i=1:ih
             % loop for thetaSpace, theta is expressed with degree
             for idxTheta = 1:max(size(thetaSpace))
                 % note that, i is y, j is x
-                currentRho = j*cosPrecompute(idxTheta) + i*sinPrecompute(idxTheta);
+                currentRho = floor(j*cosPrecompute(idxTheta) + i*sinPrecompute(idxTheta));
                 idxRho = floor((currentRho - (-maxRho)) / rhoResolution) + 1;
                 % accomulate
                 houghSpace(idxRho, idxTheta) = houghSpace(idxRho, idxTheta) + 1;
