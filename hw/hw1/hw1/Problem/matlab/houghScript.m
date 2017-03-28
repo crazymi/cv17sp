@@ -36,14 +36,13 @@ for i = 1:numel(imglist)
     
     %everything below here just saves the outputs to files%
     fname = sprintf('%s/%s_01edge.pgm', resultsdir, imgname);
-    imshow(Im);
 %     imshow(sqrt(Im/max(Im(:))));
-%     imwrite(sqrt(Im/max(Im(:))), fname);
+    imwrite(sqrt(Im/max(Im(:))), fname);
     fname = sprintf('%s/%s_02threshold.pgm', resultsdir, imgname);
 %     imshow(Im > threshold);
-%     imwrite(Im > threshold, fname);
+    imwrite(Im > threshold, fname);
     fname = sprintf('%s/%s_03hough.pgm', resultsdir, imgname);
-%     imwrite(H/max(H(:)), fname);
+    imwrite(H/max(H(:)), fname);
     imshow(H/max(H(:)));
     fname = sprintf('%s/%s_04lines.pgm', resultsdir, imgname);
     
@@ -52,7 +51,7 @@ for i = 1:numel(imglist)
        img2 = drawLine(img2, lines(j).start, lines(j).end); 
     end
     
-    imshow(img2);
-%     imwrite(img2, fname);
+%     imshow(img2);
+    imwrite(img2, fname);
 end
     
