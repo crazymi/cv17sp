@@ -1,4 +1,4 @@
-darkThreshold = 0.34;
+darkThreshold = 0.1;
 
 datadir = '../data/q3';
 resultdir = '../result/q3';
@@ -26,31 +26,44 @@ img3 = double(imread(sprintf('%s/light03.png', datadir)))/255;
 
 [m n] = size(img1);
 
+% normals : 3*N, albedo : m*n
 [normals albedo] = computeNormals( img1, img2, img3, lv1, lv2, lv3, darkThreshold);
 [normalsD albedoD] = computeNormals( double(d1), double(d2), double(d3), lv1, lv2, lv3, darkThreshold);
 
-[Ni Z] = integrability2(normTointnorm(normals,m,n));
-[Nd Zd] = integrability2(normTointnorm(normalsD,m,n));
+%  step = 10;
+%  X = 1:step:size(img1,2);
+%  Y = 1:step:size(img1,1);
+%  U = reshape(normals(1,:), size(img1));
+%  V = reshape(normals(2,:), size(img1));
+%  U = U(1:10:end, 1:10:end);
+%  V = V(1:10:end, 1:10:end);
+%  
+%  figure(1);
+%  hold off;
+%  imshow(img1);
+%  hold on;
+%  quiver(X,Y,U,V);
+%  title('Computed Surface Normals');
+%  
+%  figure(2);
+%  imagesc(albedo);
+%  title('Unnormalized Albedo');
 
-figure(1);
-surfl(uint8(Z));
+% normals : m*n*3
+normals = reshape(normals, m, n, 3);
+normalsD = reshape(normalsD, m, n, 3);
+
+% Z : m*n
+[Ni Z] = integrability2(normals);
+[Nd Zd] = integrability2(normalsD);
+
+figure(3);
+surfl(Z);
 shading interp;
 colormap gray;
 
-figure(2);
-surfl(uint8(Zd));
+figure(4);
+surfl(Zd);
 
-shading interp;
+shading flat;
 colormap gray;
-
-% 3*N to P*Q*3
-function [normal] = normTointnorm(normals, p, q)
-normal = zeros(p,q,3);
-
-for i=1:p*q
-        [x y] = ind2sub([p q], i);
-        normal(x,y,1) = normals(1,i);
-        normal(x,y,2) = normals(2,i);
-        normal(x,y,3) = normals(3,i);
-end
-end
