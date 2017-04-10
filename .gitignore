@@ -1,6 +1,9 @@
 Lecture/
+class/
 workspace/
 reference/
 .DS_STORE
 *.zip
 *.pgm
+*.asv
+*.png
